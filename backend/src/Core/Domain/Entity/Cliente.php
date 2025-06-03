@@ -15,7 +15,7 @@ class Cliente
   use MagicMethodsTrait;
 
   public function __construct(
-    protected int $id,
+    protected ?int $id = null,
     protected string $nome,
     protected DateTime $dataNascimento,
     protected TipoPessoa $tipoPessoa,
