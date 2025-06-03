@@ -17,10 +17,14 @@
 /public/hot
 /public/storage
 /storage/*.key
-/storage/pail
 /vendor
 Homestead.json
 Homestead.yaml
 npm-debug.log
 Thumbs.db
 yarn-error.log
+.gitconfig
+.vscode-server/
+.bash_history
+.composer/
+/.docker/dbdata/

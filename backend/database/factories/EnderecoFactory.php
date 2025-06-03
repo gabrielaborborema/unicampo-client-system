@@ -14,7 +14,7 @@ class EnderecoFactory extends Factory
         return [
             'endereco' => $this->faker->streetName,
             'numero' => $this->faker->buildingNumber,
-            'bairro' => $this->faker->citySuffix,
+            'bairro' => sprintf('%s %s', $this->faker->cityPrefix(), $this->faker->lastName()),
             'complemento' => $this->faker->optional()->secondaryAddress,
             'cidade' => $this->faker->city,
             'uf' => $this->faker->stateAbbr,

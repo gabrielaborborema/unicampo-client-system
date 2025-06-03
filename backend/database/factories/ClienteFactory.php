@@ -16,11 +16,9 @@ class ClienteFactory extends Factory
         $tipoPessoa = $this->faker->randomElement(['física', 'jurídica']);
         $cpfCnpj = '';
         if ($tipoPessoa === 'física') {
-            // Generate a basic fake CPF (11 digits) - real validation is more complex
-            $cpfCnpj = $this->faker->unique()->numerify('###########');
+            $cpfCnpj = $this->faker->unique()->cpf();
         } else {
-            // Generate a basic fake CNPJ (14 digits) - real validation is more complex
-            $cpfCnpj = $this->faker->unique()->numerify('##############');
+            $cpfCnpj = $this->faker->unique()->cnpj();
         }
 
         return [

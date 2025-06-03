@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome', 100);
             $table->date('data_nascimento');
-            $table->string('tipo_pessoa');
-            $table->string('cpf_cnpj')->unique();
+            $table->enum('tipo_pessoa', ['física', 'jurídica']);
+            $table->string('cpf_cnpj', 18)->unique();
             $table->string('email')->unique();
-            $table->string('telefone');
+            $table->string('telefone', 20);
 
             $table->foreignId('id_endereco')->constrained('enderecos')->onDelete('cascade');
 

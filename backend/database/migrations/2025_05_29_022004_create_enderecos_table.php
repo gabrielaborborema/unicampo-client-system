@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
-            $table->string('endereco');
-            $table->string('numero');
-            $table->string('bairro');
-            $table->string('complemento')->nullable();
-            $table->string('cidade');
-            $table->string('uf');
+            $table->string('endereco', 200);
+            $table->string('numero', 15);
+            $table->string('bairro', 150);
+            $table->string('complemento', 100)->nullable();
+            $table->string('cidade', 100);
+            $table->string('uf', 2);
             $table->timestamps();
         });
     }

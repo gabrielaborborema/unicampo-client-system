@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('profissoes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome_profissao')->unique();
+            $table->string('nome_profissao', 50)->unique();
             $table->timestamps();
         });
     }
