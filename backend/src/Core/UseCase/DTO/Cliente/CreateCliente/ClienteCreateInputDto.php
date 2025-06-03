@@ -1,23 +1,22 @@
 <?php
 
-namespace Core\UseCase\DTO\Cliente;
+namespace Core\UseCase\DTO\Cliente\CreateCliente;
 
 use Core\Domain\ValueObject\StatusCliente;
 use Core\Domain\ValueObject\TipoPessoa;
 use DateTime;
 
-class ClienteCreateOutputDto
+class ClienteCreateInputDto
 {
   public function __construct(
-    public int $id,
     public string $nome,
-    public DateTime $data_nascimento,
-    public TipoPessoa $tipo_pessoa,
-    public string $cpf_cnpj,
+    public DateTime $dataNascimento,
+    public TipoPessoa $tipoPessoa,
+    public string $cpfCnpj,
     public string $email,
     public string $telefone,
-    public int $id_endereco,
-    public int $id_profissao,
+    public int $idEndereco,
+    public int $idProfissao,
     public StatusCliente $status = StatusCliente::ATIVO,
   ) {}
 }
