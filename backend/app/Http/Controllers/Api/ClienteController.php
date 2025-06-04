@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
 use App\Http\Resources\ClienteResource;
+use Core\Domain\ValueObject\StatusCliente;
 use Core\UseCase\Cliente\CreateClienteUseCase;
 use Core\UseCase\Cliente\DeleteClienteUseCase;
 use Core\UseCase\Cliente\ListClientesUseCase;
@@ -15,6 +16,8 @@ use Core\UseCase\DTO\Cliente\ClienteInputDto;
 use Core\UseCase\DTO\Cliente\CreateCliente\ClienteCreateInputDto;
 use Core\UseCase\DTO\Cliente\ListClientes\ListClientesInputDto;
 use Core\UseCase\DTO\Cliente\UpdateCliente\ClienteUpdateInputDto;
+use Core\Domain\ValueObject\TipoPessoa;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -24,8 +27,8 @@ class ClienteController extends Controller
     {
         $response = $useCase->execute(
             input: new ListClientesInputDto(
-                filter: $request->get('filter'),
-                order: $request->get('order'),
+                filter: $request->get('filter') ?? '',
+                order: $request->get('order') ?? 'DESC',
             )
         );
 
@@ -37,18 +40,18 @@ class ClienteController extends Controller
         $response = $useCase->execute(
             input: new ClienteCreateInputDto(
                 nome: $request->get('nome'),
-                dataNascimento: $request->get('data_nascimento'),
-                tipoPessoa: $request->get('tipo_pessoa'),
+                dataNascimento: new DateTime($request->get('data_nascimento')),
+                tipoPessoa: TipoPessoa::fromString($request->get('tipo_pessoa')),
                 cpfCnpj: $request->get('cpf_cnpj'),
                 email: $request->get('email'),
                 telefone: $request->get('telefone'),
                 idEndereco: $request->get('id_endereco'),
                 idProfissao: $request->get('id_profissao'),
-                status: $request->get('status'),
+                status: StatusCliente::fromString($request->get('status')),
             )
         );
 
-        return (new ClienteResource(collect($response)))
+        return (new ClienteResource($response))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
     }
@@ -57,7 +60,7 @@ class ClienteController extends Controller
     {
         $client = $useCase->execute(new ClienteInputDto(id: $id));
 
-        return (new ClienteResource(collect($client)))->response();
+        return (new ClienteResource($client))->response();
     }
 
     public function update(UpdateClienteRequest $request, UpdateClienteUseCase $useCase, $id)
@@ -66,18 +69,18 @@ class ClienteController extends Controller
             input: new ClienteUpdateInputDto(
                 id: $id,
                 nome: $request->get('nome'),
-                dataNascimento: $request->get('data_nascimento'),
-                tipoPessoa: $request->get('tipo_pessoa'),
+                dataNascimento: new DateTime($request->get('data_nascimento')),
+                tipoPessoa: TipoPessoa::fromString($request->get('tipo_pessoa')),
                 cpfCnpj: $request->get('cpf_cnpj'),
                 email: $request->get('email'),
                 telefone: $request->get('telefone'),
                 idEndereco: $request->get('id_endereco'),
                 idProfissao: $request->get('id_profissao'),
-                status: $request->get('status'),
+                status: StatusCliente::fromString($request->get('status')),
             )
         );
 
-        return (new ClienteResource(collect($response)))->response();
+        return (new ClienteResource($response))->response();
     }
 
     public function destroy(DeleteClienteUseCase $useCase, $id)

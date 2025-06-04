@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Eloquent\ClienteEloquentRepository;
+use Core\Domain\Repository\ClienteRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app['request']->server->set('HTTPS', true);
+        $this->app->bind(
+            ClienteRepositoryInterface::class,
+            ClienteEloquentRepository::class
+        );
     }
 
     /**

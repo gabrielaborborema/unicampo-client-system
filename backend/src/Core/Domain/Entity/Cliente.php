@@ -96,11 +96,11 @@ class Cliente
 
         if ($this->tipoPessoa === TipoPessoa::FISICA) {
             if (!v::cpf()->validate($cpfCnpjUnmasked)) {
-                throw new EntityValidationException('Invalid CPF.');
+                throw new EntityValidationException('Invalid CPF. CPF must obey the digit verification');
             }
         } elseif ($this->tipoPessoa === TipoPessoa::JURIDICA) {
             if (!v::cnpj()->validate($cpfCnpjUnmasked)) {
-                throw new EntityValidationException('Invalid CNPJ.');
+                throw new EntityValidationException('Invalid CNPJ. CNPJ must obey the digit verification');
             }
         }
     }
