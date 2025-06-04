@@ -38,21 +38,11 @@ class ClienteEloquentRepository implements ClienteRepositoryInterface
 
     public function findById(int $id): EntityCliente
     {
-        return new EntityCliente(
-            nome: 'asdasd',
-            dataNascimento: new DateTime(),
-            tipoPessoa: TipoPessoa::FISICA,
-            cpfCnpj: '',
-            email: 'email@email.com',
-            telefone: '(11) 98765-4321',    
-            idEndereco: 2,
-            idProfissao: 3,
-        );
-    }
-
-    public function findByName(string $name): array
-    {
-        return [];
+        $client = $this->model->find($id);
+        if (!$client) {
+            throw new \Exception('Cliente não encontrado');
+        }
+        return $this->toCliente($client);
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array
