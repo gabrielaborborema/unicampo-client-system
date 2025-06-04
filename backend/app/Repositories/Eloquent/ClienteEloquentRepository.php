@@ -6,9 +6,6 @@ use App\Models\Cliente as Model;
 use Core\Domain\Entity\Cliente as EntityCliente;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\ClienteRepositoryInterface;
-use Core\Domain\ValueObject\StatusCliente;
-use Core\Domain\ValueObject\TipoPessoa;
-use DateTime;
 
 class ClienteEloquentRepository implements ClienteRepositoryInterface
 {
