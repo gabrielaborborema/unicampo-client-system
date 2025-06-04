@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Cliente as Model;
 use Core\Domain\Entity\Cliente as EntityCliente;
+use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\ClienteRepositoryInterface;
 use Core\Domain\ValueObject\StatusCliente;
 use Core\Domain\ValueObject\TipoPessoa;
@@ -36,63 +37,72 @@ class ClienteEloquentRepository implements ClienteRepositoryInterface
         return $this->toCliente($client);
     }
 
-    public function findById(int $id): EntityCliente
+    public function findById(int $clientId): EntityCliente
     {
-        return new EntityCliente(
-            nome: 'asdasd',
-            dataNascimento: new DateTime(),
-            tipoPessoa: TipoPessoa::FISICA,
-            cpfCnpj: '',
-            email: 'email@email.com',
-            telefone: '(11) 98765-4321',    
-            idEndereco: 2,
-            idProfissao: 3,
-        );
-    }
+        if (!$client = $this->model->find($clientId)) {
+            throw new NotFoundException('Cliente not found.');
+        }
 
-    public function findByName(string $name): array
-    {
-        return [];
+        return $this->toCliente($client);
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
-        return [];
+        $client = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter)
+                    $query->where('name', 'LIKE', "%{$filter}%");
+            })
+            ->orderBy('id', $order)
+            ->get();
+
+        return $client->toArray();
     }
 
     public function update(EntityCliente $client): EntityCliente
     {
-        return new EntityCliente(
-            nome: $client->nome,
-            dataNascimento: $client->dataNascimento,
-            tipoPessoa: $client->tipoPessoa,
-            cpfCnpj: $client->cpfCnpj,
-            email: $client->email,
-            telefone: $client->telefone,
-            id: $client->id,
-            idEndereco: $client->idEndereco,
-            idProfissao: $client->idProfissao,
-            status: $client->status,
-            createdAt: $client->created_at,
-        );
+        if (!$clientPersisted = $this->model->find($client->id)) {
+            throw new NotFoundException('Cliente not found.');
+        }
+
+        $clientPersisted->update([
+            'nome' => $client->nome,
+            'data_nascimento' => $client->dataNascimento,
+            'tipo_pessoa' => $client->tipoPessoa,
+            'cpf_cnpj' => $client->cpfCnpj,
+            'email' => $client->email,
+            'telefone' => $client->telefone,
+            'id_endereco' => $client->idEndereco,
+            'id_profissao' => $client->idProfissao,
+            'status' => $client->status,
+        ]);
+
+        $clientPersisted->refresh();
+
+        return $this->toCliente($clientPersisted);
     }
-    public function delete(int $id): bool
+
+    public function delete(int $clientId): bool
     {
-        return true;
+        if (!$clientPersisted = $this->model->find($clientId)) {
+            throw new NotFoundException('Cliente not found.');
+        }
+
+        return $clientPersisted->delete();
     }
 
     private function toCliente(object $object): EntityCliente
     {
         return new EntityCliente(
             nome: $object->nome,
-            dataNascimento: $object->dataNascimento,
-            tipoPessoa: $object->tipoPessoa,
-            cpfCnpj: $object->cpfCnpj,
+            dataNascimento: $object->data_nascimento,
+            tipoPessoa: $object->tipo_pessoa,
+            cpfCnpj: $object->cpf_cnpj,
             email: $object->email,
             telefone: $object->telefone,
             id: $object->id,
-            idEndereco: $object->idEndereco,
-            idProfissao: $object->idProfissao,
+            idEndereco: $object->id_endereco,
+            idProfissao: $object->id_profissao,
             status: $object->status,
             createdAt: $object->created_at,
         );

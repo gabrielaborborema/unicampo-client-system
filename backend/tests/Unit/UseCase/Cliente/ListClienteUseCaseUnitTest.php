@@ -39,9 +39,9 @@ class ListClienteUseCaseUnitTest extends TestCase
             $clienteCpfCnpj,
             $clienteEmail,
             $clienteTelefone,
-            $clienteId,
             $clienteIdEndereco,
             $clienteIdProfissao,
+            $clienteId,
             $clienteStatus,
         ]);
         $this->mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));

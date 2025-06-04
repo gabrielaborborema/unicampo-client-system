@@ -30,13 +30,14 @@ class ClienteUnitTest extends TestCase
     public function testHasCast()
     {
         $castsNeeded = [
+            'id' => 'int',
             'data_nascimento' => 'datetime',
             'tipo_pessoa' => TipoPessoa::class,
             'status' => StatusCliente::class,
         ];
-
+        dump($castsNeeded);
         $castsUsed = $this->model()->getCasts();
-
+        dump($castsUsed);
         $this->assertEquals($castsNeeded, $castsUsed);
     }
 
