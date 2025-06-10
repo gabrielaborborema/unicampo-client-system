@@ -20,7 +20,9 @@ class ListClientesUseCase
     {
         $clientes = $this->repository->findAll(
             filter: $input->filter,
-            order: $input->order
+            status: $input->status,
+            orderBy: $input->orderBy,
+            orderDirection: $input->orderDirection
         );
 
         $outputItems = [];

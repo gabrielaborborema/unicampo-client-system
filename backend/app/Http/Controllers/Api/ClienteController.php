@@ -27,8 +27,10 @@ class ClienteController extends Controller
     {
         $response = $useCase->execute(
             input: new ListClientesInputDto(
-                filter: $request->get('filter') ?? '',
-                order: $request->get('order') ?? 'DESC',
+                filter: $request->get('filter'),
+                status: $request->get('status'),
+                orderBy: $request->get('orderBy', 'id'),
+                orderDirection: $request->get('orderDirection', 'DESC')
             )
         );
 

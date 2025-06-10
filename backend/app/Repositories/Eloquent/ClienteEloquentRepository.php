@@ -43,15 +43,31 @@ class ClienteEloquentRepository implements ClienteRepositoryInterface
         return $this->toCliente($client);
     }
 
-    public function findAll(string $filter = '', $order = 'DESC'): array
+    public function findAll(?string $filter = null, ?string $status = null, string $orderBy = 'id', string $orderDirection = 'DESC'): array
     {
         $query = $this->model->newQuery();
 
         if ($filter) {
-            $query->where('nome', 'LIKE', "%{$filter}%");
+            $query->where(function ($q) use ($filter) {
+                $q->where('nome', 'LIKE', "%{$filter}%");
+            });
         }
 
-        $clients = $query->orderBy('id', $order)->get();
+        if ($status) {
+            //$correctedStatus = (strtoupper($status) === 'ativo') ? 'ativo' : 'inativo';
+            $query->where('status', $status);
+        }
+
+        $allowedOrderByColumns = ['id', 'nome', 'created_at'];
+        if (in_array(strtolower($orderBy), $allowedOrderByColumns)) {
+            $direction = (strtoupper($orderDirection) === 'ASC') ? 'ASC' : 'DESC';
+            $query->orderBy($orderBy, $direction);
+        } else {
+            $query->orderBy('id', 'DESC');
+        }
+
+        $clients = $query->get();
+
 
         return $clients->map(function ($client) {
             return $this->toCliente($client);
