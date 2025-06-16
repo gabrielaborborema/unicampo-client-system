@@ -83,7 +83,7 @@ class Cliente
         $this->validateEmail();
 
         DomainValidation::notNull($this->telefone, 'Telefone should not be empty.');
-        DomainValidation::strMaxLength($this->telefone, 20, "Telefone should not be longer than 255 characters");
+        DomainValidation::strMaxLength($this->telefone, 20, "Telefone should not be longer than 20 characters");
 
         DomainValidation::notNull((string) $this->idEndereco, 'Endereco should not be empty.');
         DomainValidation::notNull((string) $this->idProfissao, 'Profissao should not be empty.');
